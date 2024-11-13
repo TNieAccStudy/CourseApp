@@ -1,0 +1,49 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+
+<ul>
+    {% for i in stats %}
+    <li><strong>{{ i.name }} : {{ i.count }}</strong></li>
+    {% endfor %}
+</ul>
+<div style="width:60%">
+    <canvas id="myChart"></canvas>
+</div>
+
+<script>
+    var names = [];
+    var datas = [];
+    {% for i in stats %}
+        names.push('{{ i.name }}');
+        datas.push('{{ i.count }}');
+    {% endfor %}
+
+    window.onload = function()
+      {
+          const ctx = document.getElementById('myChart');
+
+          new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: names,
+              datasets: [{
+                label: '# of Votes',
+                data: datas,
+                borderWidth: 1
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+          });
+      }
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+{% endblock %}

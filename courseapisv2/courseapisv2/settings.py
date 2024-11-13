@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'courses.apps.CoursesConfig',
     'ckeditor',
-    'ckeditor_uploader'
+    'ckeditor_uploader',
+    'drf_yasg',
+    'rest_framework',
 ]
 
 CKEDITOR_UPLOAD_PATH = "images/ckeditor/"

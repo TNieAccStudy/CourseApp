@@ -41,3 +41,9 @@ class Lesson(BaseModel):
 
     def __str__(self):
         return self.subject
+
+class CourseSpecial(Course):
+    limit_time = models.DateTimeField()
+
+
+# test model
