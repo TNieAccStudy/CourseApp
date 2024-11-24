@@ -3,7 +3,7 @@ from django.contrib.admin import AdminSite
 from django.db.models import Count
 from django.template.response import TemplateResponse
 
-from courses.models import Category, Course, Lesson,CourseSpecial
+from courses.models import Category, Course, Lesson, CourseSpecial, Tag, Like, User, Comment
 from django.utils.html import mark_safe
 from django import forms
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
@@ -30,20 +30,22 @@ class LessonAdmin(admin.ModelAdmin):
 
     class Media:
         css = {
-            'all': ('/static/css/styles.css', )
+            'all': ('/static/css/styles.css',)
         }
+
 
 class MyAdminSite(admin.AdminSite):
     index_title = "WELCOME TO ADMIN SITE"
 
     def get_urls(self):
-        return [path('stats/',self.get_stats)] + super().get_urls()
+        return [path('stats/', self.get_stats)] + super().get_urls()
 
-    def get_stats(self,request):
-        stats_sql = Category.objects.annotate(count=Count('course__id')).values('id','name','count')
+    def get_stats(self, request):
+        stats_sql = Category.objects.annotate(count=Count('course__id')).values('id', 'name', 'count')
         return TemplateResponse(request,
                                 'admin/site_stats.html',
-                                {'stats':stats_sql})
+                                {'stats': stats_sql})
+
 
 admin_site = MyAdminSite('courseapp')
 
@@ -51,3 +53,7 @@ admin_site.register(Category)
 admin_site.register(Course)
 admin_site.register(Lesson, LessonAdmin)
 admin_site.register(CourseSpecial)
+admin_site.register(Tag)
+admin_site.register(Like)
+admin_site.register(User)
+admin_site.register(Comment)

@@ -38,6 +38,7 @@ class Lesson(BaseModel):
     content = RichTextField()
     image = models.ImageField(upload_to='lessons/%Y/%m/')
     course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    tags = models.ManyToManyField('Tag')
 
     def __str__(self):
         return self.subject
@@ -47,4 +48,22 @@ class CourseSpecial(Course):
     limit_time = models.DateTimeField()
 
 
-# test model
+class Tag(BaseModel):
+    name = models.CharField(max_length=50)
+
+
+class Interact(BaseModel):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
+
+    class Meta:
+        abstract = True
+
+
+class Like(Interact):
+    class Meta:
+        unique_together = ('user', 'lesson')
+
+
+class Comment(Interact):
+    content = models.TextField()
